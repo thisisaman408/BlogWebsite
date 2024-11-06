@@ -6,7 +6,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 const content = require(__dirname + "/views/content.js");
 app.set("view engine", "ejs");
-
+app.use(express.json());
 let posts = [];
 
 const homeStartingContent = content.homeContent;
@@ -37,6 +37,21 @@ app.post("/compose", (req, res) => {
   const index = req.body.index;
   posts.push({ title: title, text: composedText });
   res.redirect("/");
+});
+
+app.post("/delete", (req, res) => {
+  const index = req.body.deleteIndex;
+  posts.splice(index, 1);
+  res.redirect("/");
+});
+
+app.post("/edit", (req, res) => {
+  const index = req.body.index;
+  const title = req.body.title;
+  const content = req.body.content;
+  console.log(index, title, content);
+  posts[index] = { title: title, text: content };
+  res.json({ success: true, message: "Post updated successfully" });
 });
 
 app.listen(3000, function () {
