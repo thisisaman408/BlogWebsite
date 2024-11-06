@@ -1,13 +1,15 @@
-body {
+body,
+.main-container-here {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Make sure the body takes full viewport height */
+  min-height: 100vh; /* Ensure the body takes full viewport height */
+  margin: 0;
 }
-
 .container-fluid {
   padding-top: 70px;
   padding-bottom: 70px;
 }
+
 .navbar {
   padding-top: 15px;
   padding-bottom: 15px;
@@ -17,33 +19,16 @@ body {
   font-size: 12px;
   letter-spacing: 5px;
 }
+
 .navbar-nav li a:hover {
-  color: #1abc9c !important;
+  color: white !important;
 }
+
 p {
   width: 70%;
 }
-footer {
-  margin-top: auto; /* Pushes the footer to the bottom of the page */
-}
 
-.footer-padding-aman {
-  padding-bottom: 60px;
-}
-
-.footer-aman {
-  text-align: center;
-  width: 100%;
-  height: 60px;
-  background-color: #1abc9c;
-  position: relative; /* Change from absolute to relative */
-}
-
-.footer-aman p {
-  margin: 25px auto;
-  font-size: 12px;
-  color: #fff;
-}
+/* Styling for other components */
 .composetext {
   width: 100%; /* Set initial width */
   min-height: 50px; /* Minimum height */
@@ -60,13 +45,38 @@ footer {
 .post-section {
   display: flex;
 }
+
 .post {
   max-width: 80%; /* Ensure the post content doesn't take up too much space */
   display: inline-block;
 }
+
 .buttons {
   display: inline-block;
   position: relative;
   left: 100rem;
   bottom: 5rem;
+}
+
+.footer-aman {
+  position: relative;
+  text-align: center;
+  width: 100%;
+  height: 60px;
+  background-color: #1abc9c;
+  color: #fff;
+  margin-top: auto;
+}
+
+
+.footer-aman p {
+  position: relative;
+  margin-top: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 12px;
+  color: #fff;
+}
+.composeButton{
+  margin-bottom: 30rem;
 }

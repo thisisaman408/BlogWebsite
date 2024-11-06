@@ -19,6 +19,14 @@
         </ul>
     </div>
   </nav>
-
+  <script>
+    document.querySelector(".navbar-brand").addEventListener("click", () => {
+      window.location.href = "/";
+    });
+    document.querySelector(".navbar-brand").addEventListener("mouseover", () => {
+      document.querySelector(".navbar-brand").style.cursor = "pointer";
+    });
+    document.querySelector("nav").style.backgroundColor = "#1abc9c";
+  </script>
   <body>
     <div class="container">

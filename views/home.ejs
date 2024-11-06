@@ -14,117 +14,25 @@
     <%- include('partials/header'); -%>
     <h1>Home</h1>
     <p><%= homeStartingContent %></p>
-    <% for(let i = 0; i < posts.length; i++) { %>
+
+    <% for (let i = 0; i < posts.length; i++) { %>
     <div class="post-section" id="post-section-<%= i %>">
       <!-- Display Mode -->
       <div class="post" id="display-mode-<%= i %>">
         <h2><%= posts[i].title %></h2>
         <p>
-          <%= posts[i].text.substring(0, 100) %>...
-          <a href="/posts/<%= posts[i].title %>">Read More</a>
+          <%= posts[i].text.substring(0, 300) %>...
+          <a href="/posts/<%= posts[i].title %>?index=<%= i %>">Read More</a>
         </p>
-
-        <div class="buttons">
-          <button
-            class="btn btn-primary edit-button"
-            onclick="enterEditMode(<%= i %>)"
-          >
-            <i class="fa-solid fa-pen-to-square"></i> Edit
-          </button>
-          <form action="/delete" method="post" style="display: inline">
-            <input type="hidden" name="deleteIndex" value="<%= i %>" />
-            <button class="btn btn-danger delete-button" type="submit">
-              <i class="fa-solid fa-trash"></i> Delete
-            </button>
-          </form>
-        </div>
       </div>
-
-      <!-- Edit Mode (Initially Hidden) -->
-      <div class="post-edit" id="edit-mode-<%= i %>" style="display: none">
-        <input
-          class="heading"
-          type="text"
-          id="edit-title-<%= i %>"
-          value="<%= posts[i].title %>"
-        />
-        <textarea class="composetext" id="edit-content-<%= i %>">
-<%= posts[i].text %></textarea
-        >
-
-        <button
-          class="btn btn-success save-button"
-          onclick="saveChanges(<%= i %>)"
-        >
-          Save
-        </button>
-
-        <button
-          class="btn btn-secondary cancel-button"
-          onclick="cancelEdit(<%= i %>)"
-        >
-          Cancel
-        </button>
+      <div class="text-success">
+        <hr />
       </div>
-    </div>
-    <div class="text-success">
-      <hr />
     </div>
     <% } %>
+
     <br /><br />
-    <a class="btn btn-lg btn-success" href="/compose">Compose</a>
+    <a class="btn btn-lg btn-success composeButton" href="/compose">Compose</a>
     <%- include('partials/footer'); -%>
-    <script>
-      // Enter edit mode: hides display elements and shows edit fields
-      function enterEditMode(index) {
-        document.getElementById(`display-mode-${index}`).style.display = "none";
-        document.getElementById(`edit-mode-${index}`).style.display = "block";
-      }
-
-      // Cancel edit: hides edit fields and shows display elements
-      function cancelEdit(index) {
-        document.getElementById(`edit-mode-${index}`).style.display = "none";
-        document.getElementById(`display-mode-${index}`).style.display =
-          "block";
-      }
-
-      // Save changes: gather updated data and send it to the backend
-      function saveChanges(index) {
-        const updatedTitle = document.getElementById(
-          `edit-title-${index}`
-        ).value;
-        const updatedContent = document.getElementById(
-          `edit-content-${index}`
-        ).value;
-
-        fetch("/edit", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            index,
-            title: updatedTitle,
-            content: updatedContent,
-          }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              document.querySelector(`#display-mode-${index} h2`).textContent =
-                updatedTitle;
-              document.querySelector(`#display-mode-${index} p`).textContent =
-                updatedContent;
-              cancelEdit(index);
-            } else {
-              alert("Failed to save changes");
-            }
-          })
-          .catch((error) => {
-            console.error("Error saving changes:", error);
-            alert("An error occurred. Please try again.");
-          });
-      }
-    </script>
   </body>
 </html>

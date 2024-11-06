@@ -7,9 +7,122 @@
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <%- include('partials/header'); -%>
-    <h1><%= title %></h1>
-    <p><%= text %></p>
+    <div class="main-container-here">
+      <%- include('partials/header'); -%>
+      <h1 id="main-heading-text"></h1>
+      <div class="post-content" id="display-mode-<%= index %>">
+        <!-- Now, using <h2> for the title instead of <p> -->
+        <h2><%= title %></h2>
+        <p><%= text %></p>
+      </div>
+
+      <!-- Pass the index to the button and form -->
+      <div class="buttons">
+        <button
+          class="btn btn-primary edit-button"
+          onclick="enterEditMode(<%= index %>)"
+        >
+          <i class="fa-solid fa-pen-to-square"></i> Edit
+        </button>
+
+        <form action="/delete" method="post" style="display: inline">
+          <input type="hidden" name="deleteIndex" value="<%= index %>" />
+          <button class="btn btn-danger delete-button" type="submit">
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
+        </form>
+      </div>
+
+      <!-- Edit Mode (Initially Hidden) -->
+      <div class="post-edit" id="edit-mode-<%= index %>" style="display: none">
+        <input
+          class="heading"
+          type="text"
+          id="edit-title-<%= index %>"
+          value="<%= title %>"
+        />
+        <textarea class="composetext" id="edit-content-<%= index %>">
+        <%= text %>
+      </textarea
+        >
+
+        <button
+          class="btn btn-success save-button"
+          onclick="saveChanges(<%= index %>)"
+        >
+          Save
+        </button>
+
+        <button
+          class="btn btn-secondary cancel-button"
+          onclick="cancelEdit(<%= index %>)"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
     <%- include('partials/footer'); -%>
+    <script>
+      // Enter edit mode: hides display elements and shows edit fields
+      function enterEditMode(index) {
+        document.querySelector("#main-heading-text").textContent = "Edit Post";
+        document.getElementById(`display-mode-${index}`).style.display = "none";
+        document.getElementById(`edit-mode-${index}`).style.display = "block";
+      }
+
+      // Cancel edit: hides edit fields and shows display elements
+      function cancelEdit(index) {
+        document.getElementById(`edit-mode-${index}`).style.display = "none";
+        document.getElementById(`display-mode-${index}`).style.display =
+          "block";
+      }
+
+      // Save changes: gather updated data and send it to the backend
+      function saveChanges(index) {
+        const updatedTitle = document.getElementById(
+          `edit-title-${index}`
+        ).value;
+        const updatedContent = document.getElementById(
+          `edit-content-${index}`
+        ).value;
+
+        fetch("/edit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            index,
+            title: updatedTitle,
+            content: updatedContent,
+          }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Response Data:", data); // Add this line to inspect the response
+            if (data.success) {
+              // Update the title and content in the display mode
+              document.querySelector(`#display-mode-${index} h2`).textContent =
+                updatedTitle;
+              document.querySelector(`#display-mode-${index} p`).textContent =
+                updatedContent;
+              cancelEdit(index);
+            } else {
+              alert("Failed to save changes: " + data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error saving changes:", error);
+            alert(
+              "An error occurred. Please try again. Check the console for details."
+            );
+          });
+      }
+    </script>
   </body>
 </html>

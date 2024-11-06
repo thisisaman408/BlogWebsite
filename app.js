@@ -50,19 +50,27 @@ app.post("/edit", (req, res) => {
   const index = req.body.index;
   const title = req.body.title;
   const content = req.body.content;
-  console.log(index, title, content);
-  posts[index] = { title: title, text: content };
-  res.json({ success: true, message: "Post updated successfully" });
+
+  if (index !== undefined && title && content) {
+    console.log(`Index: ${index}, Title: ${title}, Content: ${content}`);
+    posts[index] = { title, text: content };
+    res.json({ success: true, message: "Post updated successfully" });
+  } else {
+    res.status(400).json({ success: false, message: "Invalid data" });
+  }
 });
 
 app.get("/posts/:postName", (req, res) => {
-  const requestedTitle = _.lowerCase(req.params.postName);
-  posts.forEach((post, index) => {
-    if (_.lowerCase(post.title) === requestedTitle) {
-      res.render("post", { title: post.title, text: post.text, index: index });
+  const requestedTitle = req.params.postName;
+  const index = req.query.index;
+
+  posts.forEach((post, i) => {
+    if (post.title === requestedTitle) {
+      res.render("post", { title: post.title, text: post.text, index: i });
     }
   });
 });
+
 app.listen(3000, function () {
   console.log("Server started on port 3000");
 });
