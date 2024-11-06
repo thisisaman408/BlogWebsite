@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+  </head>
+  <body>
+    <%- include('partials/header'); -%>
+    <h1>Home</h1>
+    <p><%= homeStartingContent %></p>
+    <% for(let i = 0; i < posts.length; i++) { %>
+    <div class="post">
+      <h2><%= posts[i].title %></h2>
+      <p><%= posts[i].text %></p>
+    </div>
+    <% } %>
+    <br /><br />
+    <a class="btn btn-lg btn-primary" href="/compose">Compose</a>
+    <%- include('partials/footer');-%>
+  </body>
+</html>
