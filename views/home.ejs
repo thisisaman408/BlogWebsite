@@ -19,7 +19,10 @@
       <!-- Display Mode -->
       <div class="post" id="display-mode-<%= i %>">
         <h2><%= posts[i].title %></h2>
-        <p><%= posts[i].text %></p>
+        <p>
+          <%= posts[i].text.substring(0, 100) %>...
+          <a href="/posts/<%= posts[i].title %>">Read More</a>
+        </p>
 
         <div class="buttons">
           <button

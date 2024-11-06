@@ -8,6 +8,7 @@ const content = require(__dirname + "/views/content.js");
 app.set("view engine", "ejs");
 app.use(express.json());
 let posts = [];
+var _ = require("lodash");
 
 const homeStartingContent = content.homeContent;
 const aboutContent = content.aboutContent;
@@ -54,6 +55,14 @@ app.post("/edit", (req, res) => {
   res.json({ success: true, message: "Post updated successfully" });
 });
 
+app.get("/posts/:postName", (req, res) => {
+  const requestedTitle = _.lowerCase(req.params.postName);
+  posts.forEach((post, index) => {
+    if (_.lowerCase(post.title) === requestedTitle) {
+      res.render("post", { title: post.title, text: post.text, index: index });
+    }
+  });
+});
 app.listen(3000, function () {
   console.log("Server started on port 3000");
 });
