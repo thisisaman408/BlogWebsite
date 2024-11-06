@@ -61,11 +61,11 @@ app.post("/edit", (req, res) => {
 });
 
 app.get("/posts/:postName", (req, res) => {
-  const requestedTitle = req.params.postName;
+  const requestedTitle = _.lowerCase(req.params.postName);
   const index = req.query.index;
 
   posts.forEach((post, i) => {
-    if (post.title === requestedTitle) {
+    if (_.lowerCase(post.title) === requestedTitle) {
       res.render("post", { title: post.title, text: post.text, index: i });
     }
   });
