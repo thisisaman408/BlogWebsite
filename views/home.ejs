@@ -15,21 +15,21 @@
     <h1>Home</h1>
     <p><%= homeStartingContent %></p>
 
-    <% for (let i = 0; i < posts.length; i++) { %>
-    <div class="post-section" id="post-section-<%= i %>">
+    <% posts.forEach((post) => { %>
+    <div class="post-section" id="post-section-<%= post._id %>">
       <!-- Display Mode -->
-      <div class="post" id="display-mode-<%= i %>">
-        <h2><%= posts[i].title %></h2>
+      <div class="post" id="display-mode-<%= post._id %>">
+        <h2><%= post.title %></h2>
         <p>
-          <%= posts[i].text.substring(0, 300) %>...
-          <a href="/posts/<%= posts[i].title %>?index=<%= i %>">Read More</a>
+          <%= post.text.substring(0, 300) %>...
+          <a href="/posts/<%= post._id %>">Read More</a>
         </p>
       </div>
       <div class="text-success">
         <hr />
       </div>
     </div>
-    <% } %>
+    <% }); %>
 
     <br /><br />
     <a class="btn btn-lg btn-success composeButton" href="/compose">Compose</a>

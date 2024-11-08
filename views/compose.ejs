@@ -30,10 +30,6 @@
 
     <%- include('partials/footer'); -%>
     <script>
-      // Initial counter value for `i`
-      let i = 0;
-
-      // Function to adjust textarea size
       const textarea = document.getElementById("composetext");
       textarea.addEventListener("input", adjustSize);
       function adjustSize() {
@@ -47,13 +43,6 @@
           this.style.overflowY = "hidden";
         }
       }
-
-      // Update `i` on each publish click
-      document.querySelector("#publish").addEventListener("click", (event) => {
-        i++; // Increment the value of `i`
-        document.querySelector("#index").value = i; // Set the incremented value to the hidden field
-        console.log("Current value of i:", i); // Log the current value
-      });
     </script>
   </body>
 </html>
